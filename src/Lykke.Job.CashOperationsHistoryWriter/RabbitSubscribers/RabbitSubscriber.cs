@@ -58,7 +58,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.RabbitSubscribers
             var cashoutSettings = RabbitMqSubscriptionSettings
                 .CreateForSubscriber(_connectionString, _exchangeName, "cashouthistorywriter")
                 .MakeDurable()
-                .UseRoutingKey(((int)MessageType.CashIn).ToString());
+                .UseRoutingKey(((int)MessageType.CashOut).ToString());
 
             _cashoutSubscriber = new RabbitMqSubscriber<CashOutEvent>(
                     _logFactory,

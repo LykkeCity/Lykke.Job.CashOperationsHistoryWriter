@@ -51,7 +51,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.RabbitSubscribers
                         cashinSettings,
                         TimeSpan.FromSeconds(10),
                         next: new DeadQueueErrorHandlingStrategy(_logFactory, cashinSettings)))
-                .SetMessageDeserializer(new JsonMessageDeserializer<CashInEvent>())
+                .SetMessageDeserializer(new ProtobufMessageDeserializer<CashInEvent>())
                 .Subscribe(ProcessCashinAsync)
                 .CreateDefaultBinding()
                 .SetConsole(new LogToConsole())

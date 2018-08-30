@@ -12,15 +12,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Repositories", "2. Repositories", "{AA5ECC48-14C3-4BE7-AF0C-D59FCA2742C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Tests", "3. Tests", "{AB790991-CEB2-44A5-9C0C-A2D26DB86D41}"
-	ProjectSection(SolutionItems) = preProject
-		src\Lykke.Job.CashOperationsHistoryWriter.AzureRepositories\CashOperationsRepository.cs = src\Lykke.Job.CashOperationsHistoryWriter.AzureRepositories\CashOperationsRepository.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.CashOperationsHistoryWriter.Services", "src\Lykke.Job.CashOperationsHistoryWriter.Services\Lykke.Job.CashOperationsHistoryWriter.Services.csproj", "{D42134F9-A73E-4890-966D-746FE732934E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.CashOperationsHistoryWriter.AzureRepositories", "src\Lykke.Job.CashOperationsHistoryWriter.AzureRepositories\Lykke.Job.CashOperationsHistoryWriter.AzureRepositories.csproj", "{1322B569-1032-4276-B86E-69F8BE3DC1F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.CashOperationsHistoryWriter.Tests", "tests\Lykke.Job.CashOperationsHistoryWriter.Tests\Lykke.Job.CashOperationsHistoryWriter.Tests.csproj", "{AAC9F450-14D7-4482-BC12-7C55006864E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution items", "0. Solution items", "{768C38FD-76C1-4123-B65E-91AE1CFBE961}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		settings.yaml = settings.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

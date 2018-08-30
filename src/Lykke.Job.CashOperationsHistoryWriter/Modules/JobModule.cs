@@ -32,15 +32,10 @@ namespace Lykke.Job.CashOperationsHistoryWriter.Modules
                 .AutoActivate()
                 .SingleInstance();
 
-            builder.RegisterType<BatchSaver<CashInOutOperationEntity>>()
-                .As<IBatchSaver<CashInOutOperationEntity>>()
-                .As<IStartStop>()
-                .WithParameter("connectionString", _settings.Db.DataConnString)
-                .WithParameter("tableName", "OperationsCash");
-
             builder.RegisterType<CashOperationsRepository>()
                 .As<ICashOperationsRepository>()
-                .SingleInstance();
+                .SingleInstance()
+                .WithParameter(TypedParameter.From(_settings.Db.DataConnString));
 
             builder.RegisterType<RabbitSubscriber>()
                 .As<IStartStop>()

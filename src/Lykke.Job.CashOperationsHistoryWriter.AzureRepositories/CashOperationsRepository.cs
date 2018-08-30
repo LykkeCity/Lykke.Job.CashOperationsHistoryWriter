@@ -1,16 +1,20 @@
-﻿using Lykke.Job.CashOperationsHistoryWriter.Core.Repositories;
+﻿using System.Threading.Tasks;
+using Lykke.Common.Log;
+using Lykke.Job.CashOperationsHistoryWriter.Core.Repositories;
 using Lykke.MatchingEngine.Connector.Models.Events;
-using System.Threading.Tasks;
 
 namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
 {
     public class CashOperationsRepository : ICashOperationsRepository
     {
-        private readonly IBatchSaver<CashInOutOperationEntity> _batchSaver;
+        private readonly BatchSaver<CashInOutOperationEntity> _batchSaver;
 
-        public CashOperationsRepository(IBatchSaver<CashInOutOperationEntity> batchSaver)
+        public CashOperationsRepository(ILogFactory logFactory, string connectionString)
         {
-            _batchSaver = batchSaver;
+            _batchSaver = new BatchSaver<CashInOutOperationEntity>(
+                connectionString,
+                "OperationsCash",
+                logFactory);
         }
 
         public async Task RegisterAsync(CashInEvent cashinEvent)
@@ -27,6 +31,21 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
             var byDate = CashInOutOperationEntity.ByDate.FromMeModel(cashoutEvent);
 
             await _batchSaver.AddAsync(byClient, byDate);
+        }
+
+        public void Start()
+        {
+            _batchSaver.Start();
+        }
+
+        public void Dispose()
+        {
+            _batchSaver.Dispose();
+        }
+
+        public void Stop()
+        {
+            _batchSaver.Stop();
         }
     }
 }

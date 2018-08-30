@@ -36,6 +36,8 @@ namespace Lykke.Job.CashOperationsHistoryWriter.RabbitSubscribers
 
         public void Start()
         {
+            _cashOperationsRepository.Start();
+
             var cashinSettings = RabbitMqSubscriptionSettings
                 .CreateForSubscriber(_connectionString, _exchangeName, "cashinhistorywriter")
                 .MakeDurable()
@@ -87,12 +89,16 @@ namespace Lykke.Job.CashOperationsHistoryWriter.RabbitSubscribers
 
         public void Dispose()
         {
+            Stop();
+
             Parallel.ForEach(new IDisposable[] { _cashinSubscriber, _cashoutSubscriber }, i => i?.Dispose());
         }
 
         public void Stop()
         {
             Parallel.ForEach(new IStopable[] {_cashinSubscriber, _cashoutSubscriber}, i => i?.Stop());
+
+            _cashOperationsRepository.Stop();
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
             {
                 DateTime = cashoutEvent.Header.Timestamp,
                 AssetId = cashoutEvent.CashOut.AssetId,
-                Amount = double.Parse(cashoutEvent.CashOut.Volume),
+                Amount = -Math.Abs(double.Parse(cashoutEvent.CashOut.Volume)),
                 ClientId = cashoutEvent.CashOut.WalletId,
             };
             if (cashoutEvent.CashOut.Fees.Any())

@@ -8,11 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Lykke.Job.CashOperationsHistoryWriter.Core.Repositories;
 
 namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
 {
-    public class BatchSaver<T> : TimerPeriod, IStartStop, IBatchSaver<T>
+    internal class BatchSaver<T> : TimerPeriod, IStartStop
         where T : TableEntity
     {
         private const int _tableServiceBatchMaximumOperations = 100;
@@ -25,7 +24,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
 
         private List<T> _queue = new List<T>();
 
-        public BatchSaver(
+        internal BatchSaver(
             string connectionString,
             string tableName,
             ILogFactory logFactory)
@@ -37,7 +36,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
             _log = logFactory.CreateLog(this);
         }
 
-        public async Task AddAsync(params T[] items)
+        internal async Task AddAsync(params T[] items)
         {
             await _lock.WaitAsync();
             try
@@ -51,6 +50,13 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
             {
                 _lock.Release();
             }
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+
+            Execute().GetAwaiter().GetResult();
         }
 
         public override async Task Execute()

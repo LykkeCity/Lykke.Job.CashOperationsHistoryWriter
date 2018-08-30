@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using System.Threading.Tasks;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using JetBrains.Annotations;
@@ -11,6 +13,7 @@ using Lykke.Job.CashOperationsHistoryWriter.Core.Services;
 using Lykke.Job.CashOperationsHistoryWriter.Settings;
 using Lykke.Job.CashOperationsHistoryWriter.Modules;
 using Lykke.Logs;
+using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.SettingsReader;
 using Lykke.MonitoringServiceApiCaller;
 using Microsoft.AspNetCore.Builder;
@@ -18,8 +21,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Threading.Tasks;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Lykke.Job.CashOperationsHistoryWriter
 {
@@ -79,7 +81,18 @@ namespace Lykke.Job.CashOperationsHistoryWriter
                     settingsManager.ConnectionString(s => s.CashOperationsHistoryWriterJob.Db.LogsConnString),
                     "CashOperationsHistoryWriterLog",
                     appSettings.SlackNotifications.AzureQueue.ConnectionString,
-                    appSettings.SlackNotifications.AzureQueue.QueueName);
+                    appSettings.SlackNotifications.AzureQueue.QueueName,
+                    logging =>
+                    {
+                        // This is necessary, if your service uses additional personal slack channel:
+                        logging.AddAdditionalSlackChannel("LykkeReports", options =>
+                        {
+                            // Optional: default is LogLevel.Information
+                            options.MinLogLevel = LogLevel.Warning;
+                            // Optional: by default is enabled
+                            options.SpamGuard.DisableGuarding();
+                        });
+                    });
 
                 var builder = new ContainerBuilder();
                 builder.Populate(services);

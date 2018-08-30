@@ -8,6 +8,12 @@ CashOperationsHistoryWriterJob:
             settings-key: CashOperationsHistoryWriterJob-DataConnString
             types:
                 - AzureTableStorage
+    Rabbit:
+        ConnectionString:
+            settings-key: GeneralRabbitMqConnectionString
+            types:
+                - RabbitMq
+        ExchangeName: spot.matching.engine.out.events
 SlackNotifications:
     AzureQueue:
         ConnectionString:

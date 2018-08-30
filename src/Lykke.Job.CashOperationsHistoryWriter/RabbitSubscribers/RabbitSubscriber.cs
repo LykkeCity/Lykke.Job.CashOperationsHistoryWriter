@@ -70,7 +70,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.RabbitSubscribers
                         cashoutSettings,
                         TimeSpan.FromSeconds(10),
                         next: new DeadQueueErrorHandlingStrategy(_logFactory, cashoutSettings)))
-                .SetMessageDeserializer(new JsonMessageDeserializer<CashOutEvent>())
+                .SetMessageDeserializer(new ProtobufMessageDeserializer<CashOutEvent>())
                 .Subscribe(ProcessCashoutAsync)
                 .CreateDefaultBinding()
                 .SetConsole(new LogToConsole())

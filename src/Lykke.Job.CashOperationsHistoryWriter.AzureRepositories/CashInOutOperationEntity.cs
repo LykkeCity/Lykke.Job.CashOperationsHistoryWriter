@@ -78,7 +78,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
                 Amount = double.Parse(cashinEvent.CashIn.Volume),
                 ClientId = cashinEvent.CashIn.WalletId,
             };
-            if (cashinEvent.CashIn.Fees.Any())
+            if (cashinEvent.CashIn.Fees != null && cashinEvent.CashIn.Fees.Any())
             {
                 var fee = cashinEvent.CashIn.Fees.First();
                 result.FeeSize = double.Parse(fee.Instruction.Size);
@@ -98,7 +98,7 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
                 Amount = -Math.Abs(double.Parse(cashoutEvent.CashOut.Volume)),
                 ClientId = cashoutEvent.CashOut.WalletId,
             };
-            if (cashoutEvent.CashOut.Fees.Any())
+            if (cashoutEvent.CashOut.Fees != null && cashoutEvent.CashOut.Fees.Any())
             {
                 var fee = cashoutEvent.CashOut.Fees.First();
                 result.FeeSize = double.Parse(fee.Instruction.Size);

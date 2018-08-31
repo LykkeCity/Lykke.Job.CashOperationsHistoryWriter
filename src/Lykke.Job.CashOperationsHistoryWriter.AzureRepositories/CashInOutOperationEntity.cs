@@ -80,7 +80,8 @@ namespace Lykke.Job.CashOperationsHistoryWriter.AzureRepositories
             };
             if (cashinEvent.CashIn.Fees != null && cashinEvent.CashIn.Fees.Any())
             {
-                var fee = cashinEvent.CashIn.Fees.First();
+                var fee = cashinEvent.CashIn.Fees.FirstOrDefault(f => f.Transfer.AssetId == result.AssetId)
+                    ?? cashinEvent.CashIn.Fees.First();
                 result.FeeSize = double.Parse(fee.Instruction.Size);
                 result.FeeTypeText = fee.Instruction.SizeType == FeeInstructionSizeType.Absolute
                     ? FeeType.Absolute.ToString()
